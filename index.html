@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Maxim & Diana — The Beginning</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500&family=Inter:wght@300&family=Manrope:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <audio id="bg-music" src="ambient.mp3" loop preload="auto"></audio>
+
+    <section class="scene active" id="scene-1">
+        <div class="scene-bg ken-burns" style="background-image: url('photo/hero.jpg');"></div>
+        
+        <div class="luxury-overlay"></div>
+        
+        <div class="intro-container">
+            <span class="intro-badge">Свадебная история</span>
+            
+            <h1 class="title-main">
+                <span class="name-block">Maxim</span>
+                <span class="ampersand">&</span>
+                <span class="name-block">Diana</span>
+            </h1>
+            
+            <div class="intro-divider"></div>
+            <p class="date-sub">12.09.2026</p>
+            
+            <button class="btn-start" onclick="nextScene(2)">
+                <span class="btn-flash"></span>
+                <span class="btn-text">Открыть историю</span>
+                <span class="btn-arrow-icon">→</span>
+            </button>
+        </div>
+    </section>
+
+    <section class="scene" id="scene-2">
+        <div class="luxury-journal-container">
+            
+            <div class="ambient-glow"></div>
+
+            <div class="journal-text-wrapper left-align">
+                <p class="phrase-premium">Иногда случайные <br><span class="thin-sub">встречи в жизни...</span></p>
+            </div>
+
+            <div class="journal-img-block floating-card">
+                <div class="img-inner-mask">
+                    <img src="photo/story-intro.jpg" alt="Maxim & Diana" class="revealing-photo-premium">
+                </div>
+                <div class="photo-tag">Это судьба...</div>
+            </div>
+
+            <div class="journal-text-wrapper right-align">
+                <p class="phrase-premium delay-phrase">
+                    становятся <span class="heart-accent">навсегда.</span>
+                </p>
+            </div>
+
+            <button class="btn-scroll-indicator" onclick="nextScene(3)">
+                <span class="indicator-line"></span>
+                <span class="indicator-text">Продолжить</span>
+            </button>
+        </div>
+    </section>
+
+    <section class="scene" id="scene-3">
+        <div class="story-gallery-container" id="gyro-container">
+            
+            <div class="gallery-overlay" onclick="closeAllPhotos()"></div>
+            
+            <div class="gallery-header">
+                <span class="episode-counter">_________</span>
+                <h2 class="gallery-title">История одной судьбоносной встречи</h2>
+                <p class="tap-tip">Тапни на карточку, чтобы узнать подробности</p>
+            </div>
+
+            <!-- КАРТОЧКА 1 -->
+            <div class="scattered-card card-1" onclick="zoomPhoto(this)">
+                <div class="card-pin"></div>
+                <div class="img-container">
+                    <img src="photo/story-1.jpg" alt="Кофейный побег">
+                </div>
+                <div class="card-story-text">
+                    <span class="card-step">01. «Кофейный побег»</span>
+                    <p>Всё началось осенью 2021-го. Диана случайно пролила латте на ноутбук Максима в забитой кофейне. Вместо злости Максим лишь ухмыльнулся и попросил её номер — «в качестве компенсации за ущерб». Так один пролитый кофе перевернул их жизнь.</p>
+                </div>
+            </div>
+
+            <!-- КАРТОЧКА 2 -->
+            <div class="scattered-card card-2" onclick="zoomPhoto(this)">
+                <div class="card-pin"></div>
+                <div class="img-container">
+                    <img src="photo/story-2.jpg" alt="Тысячи километров">
+                </div>
+                <div class="card-story-text">
+                    <span class="card-step">02. Проверка расстоянием</span>
+                    <p>Спустя два года отношений Максиму пришлось уехать в длительную командировку. Постоянные звонки через часовые пояса и внезапные прилёты на выходные доказали главный факт: истинные чувства не угасают от километров, а становятся только сильнее.</p>
+                </div>
+            </div>
+
+            <!-- КАРТОЧКА 3 -->
+            <div class="scattered-card card-3" onclick="zoomPhoto(this)">
+                <div class="card-pin"></div>
+                <div class="img-container">
+                    <img src="photo/story-3.jpg" alt="Секретный заговор">
+                </div>
+                <div class="card-story-text">
+                    <span class="card-step">03. Операция «Горный пик»</span>
+                    <p>Максим замышлял сделать предложение во время похода в горы. Он подкупил её лучшую подругу, чтобы та «вытащила» Диану на прогулку под предлогом обычной фотосессии. Диана до последнего думала, что просто позирует для блога.</p>
+                </div>
+            </div>
+
+            <!-- КАРТОЧКА 4 -->
+            <div class="scattered-card card-4" onclick="zoomPhoto(this)">
+                <div class="card-pin"></div>
+                <div class="img-container">
+                    <img src="photo/story-4.jpg" alt="Идеальный туман">
+                </div>
+                <div class="card-story-text">
+                    <span class="card-step">04. Ложная тревога</span>
+                    <p>На вершине внезапно поднялся густой туман. Диана замерзла и предложила спуститься назад, не подозревая, что у Максима в кармане зажата заветная бархатная коробочка, а пальцы трясутся вовсе не от холода.</p>
+                </div>
+            </div>
+
+            <!-- КАРТОЧКА 5 -->
+            <div class="scattered-card card-5" onclick="zoomPhoto(this)">
+                <div class="card-pin"></div>
+                <div class="img-container">
+                    <img src="photo/story-5.jpg" alt="Закат и заветное Да">
+                </div>
+                <div class="card-story-text">
+                    <span class="card-step">05. Главное «Да»</span>
+                    <p>В самый последний момент облака разошлись, и закатное солнце озарило смотровую площадку. Максим опустился на одно колено. Диана от неожиданности уронила перчатки, расплакалась и, конечно же, ответила согласием! 💍</p>
+                </div>
+            </div>
+
+            <button class="btn-gallery-next" onclick="nextScene(4)">
+                <span>Открыть конверт</span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </button>
+        </div>
+    </section>
+
+    <section class="scene" id="scene-4">
+        <div class="envelope-scene-container">
+            
+            <div class="envelope-hint">Тапни на печать, чтобы открыть конверт</div>
+
+            <div class="envelope-wrapper" id="envelope" onclick="openEnvelope()">
+                
+                <div class="envelope-back"></div>
+                
+                <div class="letter-card" id="letterCard" onclick="stopPropagation(event)">
+                    <div class="letter-inner">
+                        <span class="letter-subtitle">Приглашение</span>
+                        <h1 class="letter-names">Maxim & Diana</h1>
+                        
+                        <div class="letter-divider"></div>
+                        
+                        <p class="letter-invitation">
+                            Дорогие близкие и друзья! <br>
+                            Приглашаем вас разделить с нами <br>
+                            начало нашей семейной истории.
+                        </p>
+                        
+                        <div class="letter-date-box">
+                            <div class="date-item">
+                                <span class="date-num">12</span>
+                                <span class="date-month">Сентября</span>
+                            </div>
+                            <div class="date-item border-left">
+                                <span class="date-num">2026</span>
+                                <span class="date-month">Суббота</span>
+                            </div>
+                        </div>
+
+                        <div class="letter-location">
+                            <span class="loc-title">Grand Palace Hall</span>
+                            <span class="loc-details">Сбор гостей в 16:00 // Начало торжества в 17:00</span>
+                        </div>
+                        
+                    </div>
+
+                    <div class="letter-actions">
+                        <a href="https://go.2gis.com" target="_blank" class="btn-2gis" onclick="stopPropagation(event)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a8 8 0 0 0-8 8c0 5.25 8 12 8 12s8-6.75 8-12a8 8 0 0 0-8-8z"/><circle cx="12" cy="10" r="3"/></svg>
+                            <span>Открыть в 2ГИС</span>
+                        </a>
+
+                        <button class="btn-letter-next" onclick="handleEnvelopeNextClick(event)">
+                            <span>Подтвердить присутствие</span>
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="envelope-left"></div>
+                <div class="envelope-right"></div>
+                <div class="envelope-bottom"></div>
+                
+                <div class="envelope-top" id="envelopeTop"></div>
+
+                <div class="wax-seal" id="waxSeal">
+                    <span class="seal-monogram">M&D</span>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <section class="scene" id="scene-5">
+        <div class="rsvp-container">
+            <div class="rsvp-header">
+                <span class="rsvp-subtitle">Анкета гостя</span>
+                <p class="rsvp-text">Пожалуйста, ответьте на несколько вопросов ниже до 15 августа, чтобы мы могли сделать этот день идеальным.</p>
+            </div>
+
+            <form id="rsvp-form" class="rsvp-form" onsubmit="sendRsvp(event)">
+                
+                <div class="form-group">
+                    <label class="group-label">Сможете ли вы разделить с нами этот праздник?</label>
+                    <div class="radio-tiles">
+                        <label class="tile-card">
+                            <input type="radio" name="attendance" value="Приду" required>
+                            <div class="tile-content">
+                                <span class="tile-title">Я приду</span>
+                            </div>
+                        </label>
+                        <label class="tile-card">
+                            <input type="radio" name="attendance" value="Не смогу">
+                            <div class="tile-content">
+                                <span class="tile-title">Не смогу</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="group-label" for="guest-name">Ваше имя и фамилия</label>
+                    <input type="text" id="guest-name" name="name" class="rsvp-input" placeholder="Иван Иванов" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="group-label">Ваши предпочтения в напитках (можно несколько)</label>
+                    <div class="checkbox-tiles">
+                        <label class="tile-card-check">
+                            <input type="checkbox" name="drinks" value="Вино">
+                            <span class="check-custom"></span>
+                            <span class="check-text">Вино / Шампанское</span>
+                        </label>
+                        <label class="tile-card-check">
+                            <input type="checkbox" name="drinks" value="Виски">
+                            <span class="check-custom"></span>
+                            <span class="check-text">Виски / Коньяк</span>
+                        </label>
+                        <label class="tile-card-check">
+                            <input type="checkbox" name="drinks" value="Водка">
+                            <span class="check-custom"></span>
+                            <span class="check-text">Крепкие напитки</span>
+                        </label>
+                        <label class="tile-card-check">
+                            <input type="checkbox" name="drinks" value="Безалкогольные">
+                            <span class="check-custom"></span>
+                            <span class="check-text">Безалкогольные</span>
+                        </label>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-rsvp-submit">
+                    <span>Отправить ответ</span>
+                </button>
+            </form>
+
+            <div id="rsvp-success" class="rsvp-success-message" style="display: none;">
+                <div class="success-icon">✨</div>
+                <h3>Спасибо за ваш ответ!</h3>
+                <p id="success-desc">Ваши данные успешно переданы молодоженам.</p>
+                
+                <button type="button" class="btn-rsvp-submit" style="margin-top: 25px; width: auto; padding: 12px 30px;" onclick="nextScene(6)">
+                    <span>Посмотреть таймер</span>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <section class="scene" id="scene-6">
+        <div class="final-scene-container">
+            
+            <div class="final-photo-wrapper">
+                <img src="photo/final-photo.jpg" alt="Максим и Диана" class="final-photo">
+                <div class="photo-overlay-gradient"></div>
+            </div>
+
+            <div class="final-content">
+                <h2 class="final-title">До встречи на свадьбе!</h2>
+                
+                <p class="final-blurb">
+                    Каждый из вас — важная часть нашей жизни. Мы с нетерпением ждём этот день!
+                </p>
+
+                <div class="wedding-timer">
+                    <div class="timer-item">
+                        <span id="timer-days" class="timer-number">00</span>
+                        <span class="timer-label">дней</span>
+                    </div>
+                    <div class="timer-separator">:</div>
+                    <div class="timer-item">
+                        <span id="timer-hours" class="timer-number">00</span>
+                        <span class="timer-label">часов</span>
+                    </div>
+                    <div class="timer-separator">:</div>
+                    <div class="timer-item">
+                        <span id="timer-minutes" class="timer-number">00</span>
+                        <span class="timer-label">минут</span>
+                    </div>
+                    <div class="timer-separator">:</div>
+                    <div class="timer-item">
+                        <span id="timer-seconds" class="timer-number">00</span>
+                        <span class="timer-label">секунд</span>
+                    </div>
+                </div>
+
+                <div class="final-divider"></div>
+
+                <div class="hashtag-box">
+                    <span class="hashtag-label">Делитесь фото и видео с тегом:</span>
+                    <div class="hashtag-value">#MaxAndDiana2026</div>
+                </div>
+
+                <p class="final-signature">С любовью, Максим и Диана ✨</p>
+            </div>
+
+        </div>
+    </section>
+
+    <script src="script.js"></script>
+</body>
+</html>
