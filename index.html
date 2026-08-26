@@ -3,19 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Maxim & Diana — The Beginning</title>
+    <title>Максим & Диана — Приглашение</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500&family=Inter:wght@300&family=Manrope:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500&family=Inter:wght@300&family=Manrope:wght@400;500&family=Great+Vibes&display=swap" rel="stylesheet">
     <style>
-        /* ===== НОВАЯ ЦВЕТОВАЯ СХЕМА =====
-           Основной фон: #F5F0EB (светлый беж)
-           Акцент: #C9A87C (мягкое золото)
-           Тёмный: #3D4A4A (серо-зелёный)
-           Текст: #2D2D2D
-           Доп: #A67B5B (коричневый), #D4C5B2 (светлый)
-        ====================================== */
-
+        /* ======================================================
+           ОСНОВНЫЕ СТИЛИ
+           ====================================================== */
         * {
             box-sizing: border-box;
             margin: 0;
@@ -60,7 +55,6 @@
             filter: blur(0);
         }
 
-        /* Плавающий брендинг */
         .brand-footer {
             position: absolute;
             bottom: 16px;
@@ -95,7 +89,7 @@
             .brand-footer:hover { opacity: 1; }
         }
 
-        /* ---------- СЦЕНА 1 (ИНТРО) ---------- */
+        /* ---------- СЦЕНА 1 (ИНТРО) с новым фоном и кружевом ---------- */
         #scene-1 .intro-container {
             position: relative;
             width: 100%;
@@ -114,6 +108,47 @@
             background-size: cover;
             background-position: center;
             z-index: 0;
+        }
+
+        /* Затемнение фона */
+        .bg-darkener {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* Кружево на фоне */
+        .lace-bg {
+            position: absolute;
+            z-index: 1;
+            pointer-events: none;
+            opacity: 0.8;
+        }
+        .lace-bg img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .lace-1 {
+            top: 0;
+            left: 0;
+            width: 25vw;
+            height: 25vw;
+            max-width: 300px;
+            max-height: 300px;
+            transform: rotate(-10deg);
+        }
+        .lace-2 {
+            bottom: 0;
+            right: 0;
+            width: 30vw;
+            height: 30vw;
+            max-width: 350px;
+            max-height: 350px;
+            transform: rotate(15deg);
         }
 
         .ken-burns {
@@ -569,7 +604,7 @@
             background: #2C3E3E;
         }
 
-        /* ---------- СЦЕНА 4 (КОНВЕРТ) ---------- */
+        /* ---------- СЦЕНА 4 (БОЛЬШОЙ НАРЯДНЫЙ КОНВЕРТ) ---------- */
         .envelope-scene-container {
             position: relative;
             width: 100%;
@@ -584,22 +619,70 @@
         }
 
         .envelope-hint {
-            font-size: 0.75rem;
+            font-size: 0.9rem;
             text-transform: uppercase;
-            letter-spacing: 2px;
-            color: #8B8B8B;
+            letter-spacing: 3px;
+            color: #8B3A3A;
             margin-bottom: 40px;
             animation: pulseText 2.5s infinite ease-in-out;
+            font-weight: 500;
+            font-family: 'Cormorant Garamond', serif;
         }
 
+        /* УВЕЛИЧЕННЫЙ КОНВЕРТ С КРУЖЕВОМ */
         .envelope-wrapper {
             position: relative;
-            width: 300px;
-            height: 200px;
+            width: 400px;
+            height: 280px;
             background-color: #D4C5B2;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.12);
             cursor: pointer;
             transition: transform 0.5s ease;
+            border-radius: 6px;
+            border: 2px solid #C9A87C;
+            overflow: hidden;
+        }
+
+        /* Кружево на конверте (уголки) */
+        .envelope-lace {
+            position: absolute;
+            z-index: 7;
+            pointer-events: none;
+            opacity: 0.7;
+        }
+        .envelope-lace img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .env-lace-1 {
+            top: 0;
+            left: 0;
+            width: 80px;
+            height: 80px;
+            transform: rotate(0deg);
+        }
+        .env-lace-2 {
+            top: 0;
+            right: 0;
+            width: 80px;
+            height: 80px;
+            transform: rotate(90deg);
+        }
+        .env-lace-3 {
+            bottom: 0;
+            left: 0;
+            width: 80px;
+            height: 80px;
+            transform: rotate(-90deg);
+        }
+        .env-lace-4 {
+            bottom: 0;
+            right: 0;
+            width: 80px;
+            height: 80px;
+            transform: rotate(180deg);
         }
 
         .envelope-back, .envelope-top, .envelope-bottom, .envelope-left, .envelope-right {
@@ -608,6 +691,7 @@
             height: 100%;
             top: 0;
             left: 0;
+            border-radius: 6px;
         }
 
         .envelope-left {
@@ -631,47 +715,69 @@
             clip-path: polygon(0 0, 100% 0, 50% 52%);
             z-index: 5;
             transform-origin: top center;
-            transition: transform 0.6s cubic-bezier(0.25, 1, 0.3, 1), z-index 0.2s;
+            transition: transform 0.8s cubic-bezier(0.25, 1, 0.3, 1), z-index 0.2s;
+            border-bottom: 1px solid rgba(201,168,124,0.3);
         }
 
+        /* РЕАЛИСТИЧНАЯ СУРГУЧНАЯ ПЕЧАТЬ (увеличенная) */
         .wax-seal {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -40%) scale(1);
-            width: 55px;
-            height: 55px;
-            background: radial-gradient(circle, #D4AF37 0%, #C9A87C 100%);
+            width: 85px;
+            height: 85px;
+            background: radial-gradient(circle at 30% 30%, #F5E6A3, #D4AF37 40%, #B8860B 80%, #8B6914);
             border-radius: 50%;
             z-index: 6;
             display: flex;
             justify-content: center;
             align-items: center;
-            box-shadow: 0 4px 10px rgba(201, 168, 124, 0.4), inset 0 2px 4px rgba(255,255,255,0.3);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 
+                0 6px 20px rgba(184, 134, 11, 0.5),
+                inset 0 -4px 8px rgba(0,0,0,0.2),
+                inset 0 4px 8px rgba(255,255,220,0.6);
+            transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 2px solid #8B6914;
+        }
+
+        .wax-seal::after {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 18px;
+            width: 25px;
+            height: 12px;
+            background: radial-gradient(ellipse at center, rgba(255,255,220,0.5) 0%, transparent 70%);
+            border-radius: 50%;
+            transform: rotate(-30deg);
+            filter: blur(2px);
         }
 
         .seal-monogram {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 0.85rem;
+            font-family: 'Great Vibes', cursive;
+            font-size: 1.8rem;
             font-weight: 700;
-            color: #FFFFFF;
-            letter-spacing: 1px;
-            text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+            color: #FFF8E7;
+            text-shadow: 0 2px 6px rgba(0,0,0,0.4);
+            letter-spacing: 2px;
+            position: relative;
+            z-index: 2;
         }
 
+        /* ПИСЬМО ВНУТРИ КОНВЕРТА (увеличено) */
         .letter-card {
             position: absolute;
-            top: 5px;
-            left: 10px;
-            width: 280px;
-            height: 190px;
+            top: 10px;
+            left: 20px;
+            width: 360px;
+            height: 240px;
             background-color: #3D4A4A;
             color: #F5F0EB;
-            padding: 24px 16px;
-            border-radius: 4px;
+            padding: 28px 20px;
+            border-radius: 6px;
             z-index: 2;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
             transition: transform 0.8s cubic-bezier(0.25, 1, 0.3, 1) 0.4s,
                         height 0.8s cubic-bezier(0.25, 1, 0.3, 1) 0.4s,
                         z-index 0s 0.4s;
@@ -692,28 +798,29 @@
         .letter-subtitle {
             font-size: 0.6rem;
             text-transform: uppercase;
-            letter-spacing: 3px;
+            letter-spacing: 4px;
             color: #C9A87C;
         }
 
         .letter-names {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 1.8rem;
+            font-family: 'Great Vibes', cursive;
+            font-size: 2.2rem;
             font-weight: 400;
-            margin: 8px 0;
+            margin: 6px 0;
             color: #FFFFFF;
+            letter-spacing: 1px;
         }
 
         .letter-divider {
-            width: 40px;
+            width: 50px;
             height: 1px;
-            background-color: rgba(201, 168, 124, 0.4);
+            background-color: rgba(201, 168, 124, 0.5);
             margin: 4px 0 12px 0;
         }
 
         .letter-invitation {
-            font-size: 0.75rem;
-            line-height: 1.5;
+            font-size: 0.8rem;
+            line-height: 1.6;
             font-family: 'Manrope', sans-serif;
             font-weight: 300;
             color: #D4C5B2;
@@ -721,34 +828,44 @@
 
         .letter-date-box {
             display: flex;
-            margin: 20px 0;
+            margin: 16px 0;
             border-top: 1px solid rgba(245, 240, 235, 0.1);
             border-bottom: 1px solid rgba(245, 240, 235, 0.1);
             padding: 10px 0;
             width: 100%;
             justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
         }
 
         .date-item {
-            padding: 0 15px;
             display: flex;
             flex-direction: column;
+            align-items: center;
         }
         .date-item.border-left {
             border-left: 1px solid rgba(245, 240, 235, 0.1);
+            padding-left: 15px;
         }
 
         .date-num {
             font-family: 'Cormorant Garamond', serif;
-            font-size: 1.5rem;
+            font-size: 1.6rem;
             color: #C9A87C;
             font-weight: 500;
         }
         .date-month {
             font-size: 0.6rem;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 2px;
             color: #8B8B8B;
+        }
+        .date-time {
+            font-size: 0.7rem;
+            color: #E2DDD5;
+            font-style: italic;
+            margin-top: 2px;
+            letter-spacing: 1px;
         }
 
         .letter-location {
@@ -770,8 +887,9 @@
             display: block;
         }
 
+        /* АНИМАЦИИ ОТКРЫТИЯ (обновлены под увеличенный размер) */
         .envelope-wrapper.open {
-            transform: translateY(60px);
+            transform: translateY(80px);
             transition: transform 1.2s cubic-bezier(0.25, 1, 0.3, 1);
         }
 
@@ -804,8 +922,8 @@
         .envelope-wrapper.open .letter-card {
             opacity: 1;
             z-index: 10;
-            transform: translateY(-290px);
-            height: 450px;
+            transform: translateY(-350px);
+            height: 500px;
         }
 
         .envelope-wrapper .letter-inner {
@@ -824,7 +942,7 @@
             flex-direction: column;
             gap: 10px;
             width: 100%;
-            margin-top: 65px;
+            margin-top: 20px;
             opacity: 0;
             transform: translateY(15px);
             transition: opacity 0.8s ease 2.1s, transform 0.8s cubic-bezier(0.25, 1, 0.3, 1) 2.1s;
@@ -1214,7 +1332,7 @@
             margin-bottom: 16px;
         }
 
-        /* ---------- АДАПТИВ ---------- */
+        /* АДАПТИВ */
         @media screen and (max-width: 768px) {
             #scene-5 .rsvp-container {
                 max-height: 80vh !important;
@@ -1229,6 +1347,30 @@
                 -webkit-overflow-scrolling: touch !important;
                 padding-bottom: 50px !important;
             }
+            .envelope-wrapper {
+                width: 90vw;
+                max-width: 400px;
+                height: 62vw;
+                max-height: 280px;
+            }
+            .letter-card {
+                width: calc(90vw - 40px);
+                max-width: 360px;
+                height: calc(62vw - 20px);
+                max-height: 240px;
+            }
+            .envelope-wrapper.open .letter-card {
+                transform: translateY(-70vw);
+                height: 120vw;
+            }
+            .env-lace-1, .env-lace-2, .env-lace-3, .env-lace-4 {
+                width: 50px;
+                height: 50px;
+            }
+            .lace-1, .lace-2 {
+                width: 30vw;
+                height: 30vw;
+            }
         }
     </style>
 </head>
@@ -1236,16 +1378,26 @@
 
     <audio id="bg-music" src="ambient.mp3" loop preload="auto"></audio>
 
-    <!-- ==================== СЦЕНА 1 ==================== -->
+    <!-- ==================== СЦЕНА 1 (новый фон + кружево) ==================== -->
     <section class="scene active" id="scene-1">
-        <div class="scene-bg ken-burns" style="background-image: url('images/hero.jpg');"></div>
+        <div class="scene-bg ken-burns" style="background-image: url('images/back.avif');"></div>
+        <div class="bg-darkener"></div>
+
+        <!-- Кружево на фоне -->
+        <div class="lace-bg lace-1">
+            <img src="images/kr1.png" alt="кружево">
+        </div>
+        <div class="lace-bg lace-2">
+            <img src="images/kr2.png" alt="кружево">
+        </div>
+
         <div class="luxury-overlay"></div>
         <div class="intro-container">
             <span class="intro-badge">Свадебная история</span>
             <h1 class="title-main">
-                <span class="name-block">Maxim</span>
+                <span class="name-block">Максим</span>
                 <span class="ampersand">&</span>
-                <span class="name-block">Diana</span>
+                <span class="name-block">Диана</span>
             </h1>
             <div class="intro-divider"></div>
             <p class="date-sub">12.09.2026</p>
@@ -1272,7 +1424,7 @@
 
             <div class="journal-img-block floating-card">
                 <div class="img-inner-mask">
-                    <img src="images/story-intro.jpg" alt="Maxim & Diana" class="revealing-photo-premium">
+                    <img src="images/story-intro.jpg" alt="Максим & Диана" class="revealing-photo-premium">
                 </div>
                 <div class="photo-tag">Это судьба...</div>
             </div>
@@ -1375,17 +1527,23 @@
         </div>
     </section>
 
-    <!-- ==================== СЦЕНА 4 ==================== -->
+    <!-- ==================== СЦЕНА 4 (БОЛЬШОЙ КОНВЕРТ С КРУЖЕВОМ) ==================== -->
     <section class="scene" id="scene-4">
         <div class="envelope-scene-container">
-            <div class="envelope-hint">Тапни на печать, чтобы открыть конверт</div>
+            <div class="envelope-hint">Нажмите, чтобы открыть конверт</div>
 
             <div class="envelope-wrapper" id="envelope" onclick="openEnvelope()">
+                <!-- Кружево на конверте (уголки) -->
+                <div class="envelope-lace env-lace-1"><img src="images/kr1.png" alt="кружево"></div>
+                <div class="envelope-lace env-lace-2"><img src="images/kr2.png" alt="кружево"></div>
+                <div class="envelope-lace env-lace-3"><img src="images/kr1.png" alt="кружево"></div>
+                <div class="envelope-lace env-lace-4"><img src="images/kr2.png" alt="кружево"></div>
+
                 <div class="envelope-back"></div>
                 <div class="letter-card" id="letterCard" onclick="stopPropagation(event)">
                     <div class="letter-inner">
                         <span class="letter-subtitle">Приглашение</span>
-                        <h1 class="letter-names">Maxim & Diana</h1>
+                        <h1 class="letter-names">Максим & Диана</h1>
                         <div class="letter-divider"></div>
                         <p class="letter-invitation">
                             Дорогие близкие и друзья! <br>
@@ -1396,10 +1554,12 @@
                             <div class="date-item">
                                 <span class="date-num">12</span>
                                 <span class="date-month">Сентября</span>
+                                <span class="date-time">в 16:00</span>
                             </div>
                             <div class="date-item border-left">
                                 <span class="date-num">2026</span>
                                 <span class="date-month">Суббота</span>
+                                <span class="date-time">(4 часа вечера)</span>
                             </div>
                         </div>
                         <div class="letter-location">
@@ -1434,7 +1594,7 @@
         </div>
     </section>
 
-    <!-- ==================== СЦЕНА 5 ==================== -->
+    <!-- ==================== СЦЕНА 5 (RSVP) ==================== -->
     <section class="scene" id="scene-5">
         <div class="rsvp-container">
             <div class="rsvp-header">
@@ -1508,7 +1668,7 @@
         </div>
     </section>
 
-    <!-- ==================== СЦЕНА 6 ==================== -->
+    <!-- ==================== СЦЕНА 6 (ФИНАЛ) ==================== -->
     <section class="scene" id="scene-6">
         <div class="final-scene-container">
             <div class="final-photo-wrapper">
@@ -1641,8 +1801,8 @@
             if (submitButton) submitButton.disabled = true;
 
             const formData = new FormData(form);
-            formData.append("access_key", "e7d0e149-5d47-4ca0-b82c-73d5806cbdd1");
-            formData.append("subject", "Новый ответ RSVP на свадьбу!");
+            formData.append("access_key", "c2bf3689-190a-48e3-8a6e-c9f13ad88314");
+            formData.append("subject", "Новый ответ RSVP на свадьбу Максима и Дианы!");
 
             const drinks = [];
             form.querySelectorAll('input[name="drinks"]:checked').forEach((checkbox) => {
