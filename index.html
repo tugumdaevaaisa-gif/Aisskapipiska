@@ -1,264 +1,602 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Приглашение на свадьбу — Synodica.studio</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
+ <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Manrope:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500&family=Inter:wght@300&family=Manrope:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
     <style>
-        /* ==================== ОБЩИЕ СТИЛИ ==================== */
+        /* ===== НОВАЯ ЦВЕТОВАЯ СХЕМА =====
+           Основной фон: #F5F0EB (светлый беж)
+           Акцент: #C9A87C (мягкое золото)
+           Тёмный: #3D4A4A (серо-зелёный)
+           Текст: #2D2D2D
+           Доп: #A67B5B (коричневый), #D4C5B2 (светлый)
+        ====================================== */
+
         * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            font-family: 'Manrope', sans-serif;
-            background-color: #F5F0EB;
-            color: #2D2D2D;
-            line-height: 1.6;
-        }
-        .container {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-        .script-title {
-            font-family: 'Great Vibes', cursive;
-            font-size: 3rem;
-            font-weight: 400;
-            color: #8B3A3A;
-            text-align: center;
-            margin-bottom: 20px;
+            -webkit-font-smoothing: antialiased;
+            -webkit-tap-highlight-color: transparent;
         }
 
-        /* ==================== ХЕДЕР ==================== */
-        .header {
-            padding: 25px 0;
-            text-align: center;
-            border-bottom: 1px solid #E8DDD3;
-            background: #F5F0EB;
-        }
-        .logo {
-            font-family: 'Great Vibes', cursive;
-            font-size: 2.2rem;
-            color: #8B3A3A;
-        }
-        .logo-subtitle {
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            color: #A07A6E;
-            margin-top: -5px;
-        }
-
-        /* ==================== HERO (МЫ ЖЕНИМСЯ!) ==================== */
-        .hero {
-            position: relative;
-            padding: 80px 0 60px;
-            text-align: center;
-            background: #FDF8F3;
-            /* Нейтральное красивое фоновое изображение – замените на своё */
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" opacity="0.15"><path d="M0 0 L800 0 L800 600 L0 600 Z" fill="%23f5f0eb"/><circle cx="200" cy="150" r="120" fill="%23e8ddd3" opacity="0.4"/><circle cx="600" cy="450" r="160" fill="%23dcc8b8" opacity="0.3"/><circle cx="500" cy="100" r="90" fill="%23f0e3d8" opacity="0.3"/><path d="M100 500 Q250 400 400 500 T700 500" stroke="%23e8ddd3" stroke-width="2" fill="none" opacity="0.5"/><path d="M50 450 Q200 350 350 450 T650 450" stroke="%23dcc8b8" stroke-width="2" fill="none" opacity="0.4"/></svg>');
-            background-size: cover;
-            background-position: center;
-            background-blend-mode: overlay;
-        }
-        .hero::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
+        body, html {
             width: 100%;
             height: 100%;
-            background: rgba(255, 255, 255, 0.2);
-            pointer-events: none;
-        }
-        .hero .container {
+            overflow: hidden !important;
+            background-color: #F5F0EB;
+            font-family: 'Manrope', sans-serif;
+            color: #2D2D2D;
             position: relative;
-            z-index: 2;
-        }
-        .hero .script-title {
-            font-size: 4rem;
-            color: #8B3A3A;
-            text-shadow: 0 2px 8px rgba(255,255,255,0.6);
-        }
-        .hero-sub {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 1.2rem;
-            font-style: italic;
-            color: #5D2E2E;
-            margin-top: 5px;
-            opacity: 0.7;
         }
 
-        /* ==================== СТОРИ (УЗНАЛИ?) – с активным фоном ==================== */
-        .story {
-            position: relative;
-            padding: 50px 0;
-            background: #F4EDE6;
+        .scene {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            visibility: hidden;
+            z-index: 1;
+            transition: transform 1.2s cubic-bezier(0.25, 1, 0.3, 1),
+                        opacity 1.2s cubic-bezier(0.25, 1, 0.3, 1),
+                        visibility 1.2s,
+                        filter 1.2s ease;
+            transform: scale(1.06);
+            filter: blur(10px);
             overflow: hidden;
         }
-        /* Размытый узор на фоне */
-        .story::before {
-            content: '';
+
+        .scene.active {
+            opacity: 1;
+            visibility: visible;
+            z-index: 2;
+            transform: scale(1);
+            filter: blur(0);
+        }
+
+        /* Плавающий брендинг */
+        .brand-footer {
             position: absolute;
-            top: 0;
-            left: 0;
+            bottom: 16px;
+            right: 20px;
+            z-index: 50;
+            text-align: right;
+            pointer-events: none;
+            font-family: 'Cormorant Garamond', serif;
+            color: rgba(201, 168, 124, 0.6);
+            line-height: 1.2;
+            text-shadow: 0 0 12px rgba(245, 240, 235, 0.8);
+            opacity: 0.7;
+            transition: opacity 0.3s;
+        }
+        .brand-footer .brand-name {
+            font-size: 1.1rem;
+            font-weight: 500;
+            letter-spacing: 2px;
+            display: block;
+        }
+        .brand-footer .brand-sub {
+            font-size: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: rgba(139, 139, 139, 0.7);
+            font-family: 'Inter', sans-serif;
+            font-weight: 300;
+            display: block;
+            margin-top: 1px;
+        }
+        @media (hover: hover) {
+            .brand-footer:hover { opacity: 1; }
+        }
+
+        /* ---------- СЦЕНА 1 (ИНТРО) ---------- */
+        #scene-1 .intro-container {
+            position: relative;
             width: 100%;
             height: 100%;
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" opacity="0.08"><path d="M100 100 Q150 50 200 100 T300 100" stroke="%238B3A3A" stroke-width="2" fill="none"/><path d="M100 150 Q150 100 200 150 T300 150" stroke="%238B3A3A" stroke-width="2" fill="none"/><circle cx="200" cy="250" r="40" fill="%238B3A3A"/><circle cx="140" cy="300" r="30" fill="%238B3A3A"/><circle cx="260" cy="280" r="35" fill="%238B3A3A"/><circle cx="180" cy="180" r="20" fill="%238B3A3A"/><circle cx="240" cy="200" r="25" fill="%238B3A3A"/></svg>');
-            background-size: 300px 300px;
-            background-repeat: repeat;
-            filter: blur(3px);
-            pointer-events: none;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 60px 24px;
+            z-index: 5;
+        }
+
+        .scene-bg {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-size: cover;
+            background-position: center;
             z-index: 0;
         }
-        .story .container {
-            position: relative;
-            z-index: 1;
-        }
-        .story-text {
-            max-width: 600px;
-            margin: 0 auto;
-            text-align: center;
-            font-size: 1.1rem;
-            color: #3D3D3D;
-            font-weight: 300;
-            background: rgba(255,255,255,0.3);
-            padding: 20px 30px;
-            border-radius: 16px;
-            backdrop-filter: blur(4px);
-        }
-        .hand-drawn-arrow {
-            font-size: 2.5rem;
-            text-align: center;
-            color: #8B3A3A;
-            margin-top: 15px;
-            opacity: 0.6;
+
+        .ken-burns {
+            animation: kenBurnsEffect 20s cubic-bezier(0.25, 1, 0.5, 1) forwards;
         }
 
-        /* ==================== ДАТА (вишнёвый фон) ==================== */
-        .date-block {
-            padding: 40px 0;
-            background: #8B3A3A;
-            color: #fff;
+        @keyframes kenBurnsEffect {
+            0% { transform: scale(1.0); filter: brightness(0.85); }
+            100% { transform: scale(1.15); filter: brightness(0.75); }
         }
-        .date-block .script-title {
-            color: #FAD7A0;
+
+        .luxury-overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.65) 100%);
+            z-index: 2;
         }
-        .date-text {
-            text-align: center;
-            font-size: 2rem;
-            font-weight: 400;
-            letter-spacing: 2px;
-            margin-bottom: 5px;
+
+        .intro-badge {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            color: #C9A87C;
+            margin-bottom: 24px;
+            opacity: 0;
+            transform: translateY(-10px);
+            animation: fadeInElement 1.2s ease 0.4s forwards;
+        }
+
+        .title-main {
             font-family: 'Cormorant Garamond', serif;
-        }
-        .date-time {
+            font-size: 3.8rem;
+            font-weight: 400;
+            color: #FFFFFF;
+            line-height: 1.1;
             text-align: center;
-            font-size: 1.3rem;
-            font-weight: 300;
-            color: #FAD7A0;
-            margin-bottom: 25px;
-            font-style: italic;
-        }
-        .calendar {
-            max-width: 400px;
-            margin: 0 auto;
-            background: rgba(255,255,255,0.1);
-            backdrop-filter: blur(4px);
-            padding: 20px;
-            border-radius: 16px;
-        }
-        .calendar-header {
-            text-align: center;
-            font-weight: 500;
-            margin-bottom: 10px;
-            font-size: 1.1rem;
-        }
-        .calendar-grid {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 4px;
-            text-align: center;
-        }
-        .day {
-            font-weight: 600;
-            font-size: 0.7rem;
-            color: #FAD7A0;
-        }
-        .day-num {
-            font-size: 0.9rem;
-            padding: 6px 0;
-            border-radius: 50%;
-            background: transparent;
-            transition: background 0.2s;
-        }
-        .day-num.selected {
-            background: #FAD7A0;
-            color: #8B3A3A;
-            font-weight: 700;
-        }
-        .day-num.empty {
-            visibility: hidden;
-        }
-        .calendar-heart {
-            text-align: center;
-            margin-top: 12px;
-            font-size: 1.5rem;
+            letter-spacing: 1px;
         }
 
-        /* ==================== ЛОКАЦИЯ ==================== */
-        .location {
-            padding: 40px 0;
-            background: #FBF7F2;
+        .title-main .name-block {
+            display: block;
+            opacity: 0;
+            transform: translateY(25px);
         }
-        .location-content {
+        .title-main .name-block:nth-child(1) {
+            animation: fadeInElement 1.4s cubic-bezier(0.25, 1, 0.3, 1) 0.6s forwards;
+        }
+        .title-main .name-block:nth-child(3) {
+            animation: fadeInElement 1.4s cubic-bezier(0.25, 1, 0.3, 1) 1s forwards;
+        }
+
+        .title-main .ampersand {
+            display: block;
+            font-size: 2.2rem;
+            font-style: italic;
+            color: rgba(255, 255, 255, 0.5);
+            margin: 8px 0;
+            opacity: 0;
+            animation: fadeInElement 1.2s ease 0.8s forwards;
+        }
+
+        .intro-divider {
+            width: 30px;
+            height: 1px;
+            background-color: rgba(255, 255, 255, 0.3);
+            margin: 30px 0;
+            opacity: 0;
+            animation: fadeInElement 1s ease 1.2s forwards;
+        }
+
+        .date-sub {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            letter-spacing: 6px;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: auto;
+            opacity: 0;
+            animation: fadeInElement 1.2s ease 1.3s forwards;
+        }
+
+        .btn-start {
+            position: relative;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            padding: 18px 40px;
+            color: #FFFFFF;
+            border-radius: 100px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(15px);
+            animation: fadeInElement 1.5s cubic-bezier(0.25, 1, 0.3, 1) 1.6s forwards;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            transition: all 0.4s cubic-bezier(0.25, 1, 0.3, 1);
+        }
+
+        .btn-flash {
+            position: absolute;
+            top: 0; left: -100%; width: 50%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
+            transform: skewX(-25deg);
+            animation: lightFlash 4s infinite ease-in-out;
+        }
+
+        @keyframes lightFlash {
+            0% { left: -100%; }
+            30% { left: 150%; }
+            100% { left: 150%; }
+        }
+
+        .btn-start .btn-arrow-icon {
+            font-size: 1.1rem;
+            transition: transform 0.4s ease;
+        }
+        .btn-start:active {
+            background: #FFFFFF;
+            color: #2D2D2D;
+            transform: scale(0.96) translateY(0);
+        }
+        .btn-start:active .btn-arrow-icon {
+            transform: translateX(4px);
+        }
+
+        @keyframes fadeInElement {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ---------- СЦЕНА 2 (ПРОЯВЛЕНИЕ) ---------- */
+        .luxury-journal-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            padding: 60px 28px 40px 28px;
+            background-color: #F5F0EB;
+            overflow: hidden;
+        }
+
+        .ambient-glow {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 350px;
+            height: 350px;
+            background: radial-gradient(circle, rgba(61, 74, 74, 0.12) 0%, rgba(201, 168, 124, 0.08) 50%, transparent 100%);
+            filter: blur(40px);
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .journal-text-wrapper {
+            width: 100%;
+            display: flex;
+            z-index: 3;
+        }
+        .journal-text-wrapper.left-align { justify-content: flex-start; }
+        .journal-text-wrapper.right-align { justify-content: flex-end; margin-top: -10px; }
+
+        .phrase-premium {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.9rem;
+            font-weight: 400;
+            color: #2D2D2D;
+            line-height: 1.2;
+            opacity: 0;
+            transform: translateY(25px);
+            transition: all 1.4s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .thin-sub {
+            font-family: 'Manrope', sans-serif;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: #8B8B8B;
+            display: block;
+            margin-top: 6px;
+        }
+
+        .heart-accent {
+            font-style: italic;
+            color: #C9A87C;
+            font-weight: 500;
+            padding-left: 4px;
+        }
+
+        .scene.active .phrase-premium {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .scene.active .delay-phrase {
+            transition-delay: 0.6s;
+        }
+
+        .journal-img-block {
+            position: relative;
+            width: 80%;
+            max-width: 290px;
+            z-index: 2;
+        }
+
+        .img-inner-mask {
+            width: 100%;
+            height: 40vh;
+            overflow: hidden;
+            border-radius: 16px;
+            box-shadow: 0 30px 70px rgba(25, 35, 30, 0.15), 0 10px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .revealing-photo-premium {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: blur(10px) scale(1.12);
+            transition: all 1.8s cubic-bezier(0.22, 1, 0.36, 1) 0.2s;
+        }
+
+        .scene.active .revealing-photo-premium {
+            filter: blur(0) scale(1);
+        }
+
+        .photo-tag {
+            position: absolute;
+            bottom: -20px;
+            left: 20px;
+            font-size: 0.65rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            color: #A67B5B;
+            background: #F5F0EB;
+            padding: 4px 10px;
+            border-radius: 4px;
+            opacity: 0;
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: all 1s cubic-bezier(0.22, 1, 0.36, 1) 1.2s;
+        }
+
+        .scene.active .photo-tag {
+            opacity: 1;
+            transform: scaleX(1);
+        }
+
+        .floating-card {
+            animation: floatingFloat 6s infinite ease-in-out;
+        }
+
+        @keyframes floatingFloat {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-8px) rotate(0.5deg); }
+        }
+
+        .btn-scroll-indicator {
+            background: transparent;
+            border: none;
+            cursor: pointer;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 20px;
-        }
-        .location-text {
-            max-width: 500px;
-            text-align: center;
-            font-size: 1rem;
-        }
-        .btn-map {
-            background: #8B3A3A;
-            color: #fff;
-            border: none;
-            padding: 12px 36px;
-            border-radius: 40px;
-            font-size: 0.9rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
-        .btn-map:hover {
-            background: #6f2d2d;
+            gap: 12px;
+            padding: 10px;
+            z-index: 3;
         }
 
-        /* ==================== КОНВЕРТ (НОВЫЙ БЛОК) ==================== */
-        .envelope-section {
-            padding: 50px 0;
-            background: #F5F0EB;
-            text-align: center;
+        .indicator-line {
+            width: 1px;
+            height: 40px;
+            background: linear-gradient(to bottom, #C9A87C, transparent);
+            transform: scaleY(0);
+            transform-origin: top;
+            transition: transform 1s cubic-bezier(0.22, 1, 0.36, 1) 1s;
         }
-        .envelope-wrapper {
+        .scene.active .indicator-line {
+            transform: scaleY(1);
+        }
+
+        .indicator-text {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            color: #8B8B8B;
+            font-weight: 500;
+            animation: pulseText 3s infinite ease-in-out;
+        }
+
+        @keyframes pulseText {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+
+        /* ---------- СЦЕНА 3 (ГАЛЕРЕЯ) ---------- */
+        .story-gallery-container {
             position: relative;
-            width: 320px;
-            height: 220px;
-            margin: 20px auto;
-            background-color: #D4C5B2;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.12);
+            width: 100%;
+            height: 100%;
+            background-color: #F5F0EB;
+            padding: 24px 16px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .gallery-header {
+            text-align: center;
+            margin-top: 10px;
+            z-index: 10;
+        }
+
+        .episode-counter {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: #C9A87C;
+            font-weight: 600;
+        }
+
+        .gallery-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.6rem;
+            color: #2D2D2D;
+            margin: 4px 0;
+            font-weight: 400;
+        }
+
+        .tap-tip {
+            font-size: 0.7rem;
+            color: #8B8B8B;
+            letter-spacing: 1px;
+        }
+
+        .scattered-card {
+            position: absolute;
+            background: #FFFFFF;
+            padding: 10px 10px 14px 10px;
+            box-shadow: 0 15px 35px rgba(35, 45, 40, 0.08), 0 3px 10px rgba(0, 0, 0, 0.04);
+            border-radius: 2px;
             cursor: pointer;
+            transition: transform 0.5s cubic-bezier(0.25, 1, 0.3, 1), box-shadow 0.5s ease, z-index 0s;
+            z-index: 5;
+            backface-visibility: hidden;
+        }
+
+        .scattered-card .img-container {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            overflow: hidden;
+            background-color: #EFEFEF;
+        }
+
+        .scattered-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
             transition: transform 0.5s ease;
+        }
+
+        .card-story-text {
+            margin-top: 10px;
+            font-size: 0.68rem;
+            line-height: 1.4;
+            color: #333333;
+        }
+
+        .card-step {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.6rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: #C9A87C;
+            display: block;
+            margin-bottom: 2px;
+        }
+
+        .card-story-text p {
+            font-family: 'Manrope', sans-serif;
+            font-weight: 400;
+        }
+
+        .card-1 { width: 145px; top: 16%; left: 4%; transform: rotate(-6deg); }
+        .card-2 { width: 150px; top: 22%; right: 4%; transform: rotate(5deg); }
+        .card-3 { width: 155px; top: 44%; left: 8%; transform: rotate(-4deg); }
+        .card-4 { width: 145px; top: 50%; right: 6%; transform: rotate(7deg); }
+        .card-5 { width: 155px; top: 65%; left: 24%; transform: rotate(-4deg); }
+
+        .card-pin {
+            position: absolute;
+            top: -6px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 35px;
+            height: 12px;
+            background: rgba(245, 240, 235, 0.7);
+            backdrop-filter: blur(2px);
+            border-radius: 2px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+        }
+
+        .scattered-card.zoomed {
+            position: fixed !important;
+            top: 50% !important;
+            left: 50% !important;
+            width: 88vw !important;
+            max-width: 340px !important;
+            height: auto !important;
+            transform: translate(-50%, -50%) rotate(0deg) !important;
+            z-index: 999 !important;
+            box-shadow: 0 35px 80px rgba(25, 35, 30, 0.3);
+            padding: 14px 14px 20px 14px;
+        }
+
+        .scattered-card.zoomed .card-pin { display: none; }
+        .scattered-card.zoomed .card-story-text {
+            font-size: 0.85rem;
+            margin-top: 14px;
+        }
+        .scattered-card.zoomed .card-step { font-size: 0.7rem; margin-bottom: 4px; }
+
+        .btn-gallery-next {
+            position: relative;
+            margin: auto auto 15px auto;
+            z-index: 20;
+            background: #3D4A4A;
+            color: #FFFFFF;
+            border: none;
+            padding: 14px 32px;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 10px 25px rgba(61, 74, 74, 0.2);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-gallery-next:active {
+            transform: scale(0.95);
+            background: #2C3E3E;
+        }
+
+        /* ---------- СЦЕНА 4 (КОНВЕРТ) ---------- */
+        .envelope-scene-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            background-color: #F5F0EB;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
             perspective: 1000px;
         }
+
+        .envelope-hint {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #8B8B8B;
+            margin-bottom: 40px;
+            animation: pulseText 2.5s infinite ease-in-out;
+        }
+
+        .envelope-wrapper {
+            position: relative;
+            width: 300px;
+            height: 200px;
+            background-color: #D4C5B2;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.08);
+            cursor: pointer;
+            transition: transform 0.5s ease;
+        }
+
         .envelope-back, .envelope-top, .envelope-bottom, .envelope-left, .envelope-right {
             position: absolute;
             width: 100%;
@@ -266,6 +604,7 @@
             top: 0;
             left: 0;
         }
+
         .envelope-left {
             background-color: #E6D9CA;
             clip-path: polygon(0 0, 52% 50%, 0 100%);
@@ -287,188 +626,235 @@
             clip-path: polygon(0 0, 100% 0, 50% 52%);
             z-index: 5;
             transform-origin: top center;
-            transition: transform 0.8s cubic-bezier(0.33, 1, 0.68, 1), z-index 0.2s;
+            transition: transform 0.6s cubic-bezier(0.25, 1, 0.3, 1), z-index 0.2s;
         }
-        .envelope-wrapper.open .envelope-top {
-            transform: rotateX(180deg);
-            z-index: 1;
-            background-color: #CBBBA8;
-        }
-        /* Сургучная печать */
+
         .wax-seal {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -40%) scale(1);
-            width: 65px;
-            height: 65px;
+            width: 55px;
+            height: 55px;
             background: radial-gradient(circle, #D4AF37 0%, #C9A87C 100%);
             border-radius: 50%;
             z-index: 6;
             display: flex;
             justify-content: center;
             align-items: center;
-            box-shadow: 0 4px 15px rgba(201, 168, 124, 0.5), inset 0 2px 6px rgba(255,255,255,0.4);
-            transition: all 0.6s cubic-bezier(0.33, 1, 0.68, 1);
-            font-family: 'Great Vibes', cursive;
-            font-size: 1.6rem;
+            box-shadow: 0 4px 10px rgba(201, 168, 124, 0.4), inset 0 2px 4px rgba(255,255,255,0.3);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .seal-monogram {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 0.85rem;
+            font-weight: 700;
             color: #FFFFFF;
-            text-shadow: 0 1px 3px rgba(0,0,0,0.3);
             letter-spacing: 1px;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.2);
         }
-        .envelope-wrapper.open .wax-seal {
-            transform: translate(-50%, -40%) scale(0);
-            opacity: 0;
-            pointer-events: none;
-        }
-        /* Письмо внутри */
+
         .letter-card {
             position: absolute;
-            top: 8px;
-            left: 12px;
-            width: 296px;
-            height: 200px;
-            background-color: #8B3A3A;
+            top: 5px;
+            left: 10px;
+            width: 280px;
+            height: 190px;
+            background-color: #3D4A4A;
             color: #F5F0EB;
-            padding: 20px 16px;
+            padding: 24px 16px;
             border-radius: 4px;
             z-index: 2;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-            transition: transform 1s cubic-bezier(0.34, 1.3, 0.64, 1) 0.6s,
-                        height 1s cubic-bezier(0.34, 1.3, 0.64, 1) 0.6s,
-                        z-index 0s 0.6s;
-            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: transform 0.8s cubic-bezier(0.25, 1, 0.3, 1) 0.4s,
+                        height 0.8s cubic-bezier(0.25, 1, 0.3, 1) 0.4s,
+                        z-index 0s 0.4s;
         }
-        .envelope-wrapper.open .letter-card {
-            z-index: 10;
-            transform: translateY(-320px);
-            height: 480px;
-        }
+
         .letter-inner {
+            opacity: 0;
+            transition: opacity 0.5s ease 1.6s;
             display: flex;
             flex-direction: column;
             align-items: center;
             text-align: center;
             height: 100%;
+            box-sizing: border-box;
             justify-content: space-between;
-            opacity: 0;
-            transition: opacity 0.5s ease 1.4s;
         }
-        .envelope-wrapper.open .letter-inner {
-            opacity: 1;
-        }
+
         .letter-subtitle {
-            font-size: 0.7rem;
+            font-size: 0.6rem;
             text-transform: uppercase;
             letter-spacing: 3px;
-            color: #FAD7A0;
+            color: #C9A87C;
         }
+
         .letter-names {
-            font-family: 'Great Vibes', cursive;
-            font-size: 2.2rem;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.8rem;
             font-weight: 400;
-            color: #fff;
-            margin: 5px 0;
+            margin: 8px 0;
+            color: #FFFFFF;
         }
+
         .letter-divider {
             width: 40px;
             height: 1px;
-            background-color: rgba(250, 215, 160, 0.4);
-            margin: 5px 0 10px;
+            background-color: rgba(201, 168, 124, 0.4);
+            margin: 4px 0 12px 0;
         }
+
         .letter-invitation {
-            font-size: 0.85rem;
-            line-height: 1.6;
+            font-size: 0.75rem;
+            line-height: 1.5;
+            font-family: 'Manrope', sans-serif;
             font-weight: 300;
-            color: #E8DDD3;
-            max-width: 90%;
+            color: #D4C5B2;
         }
+
         .letter-date-box {
             display: flex;
-            justify-content: center;
-            gap: 20px;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            padding: 8px 0;
+            margin: 20px 0;
+            border-top: 1px solid rgba(245, 240, 235, 0.1);
+            border-bottom: 1px solid rgba(245, 240, 235, 0.1);
+            padding: 10px 0;
             width: 100%;
+            justify-content: center;
         }
+
         .date-item {
+            padding: 0 15px;
             display: flex;
             flex-direction: column;
-            align-items: center;
         }
+        .date-item.border-left {
+            border-left: 1px solid rgba(245, 240, 235, 0.1);
+        }
+
         .date-num {
             font-family: 'Cormorant Garamond', serif;
-            font-size: 1.6rem;
-            color: #FAD7A0;
+            font-size: 1.5rem;
+            color: #C9A87C;
             font-weight: 500;
         }
         .date-month {
             font-size: 0.6rem;
             text-transform: uppercase;
             letter-spacing: 1px;
-            color: #D4C5B2;
+            color: #8B8B8B;
         }
+
         .letter-location {
-            margin-top: 5px;
+            margin-top: auto;
         }
         .loc-title {
             font-family: 'Cormorant Garamond', serif;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             font-style: italic;
-            color: #fff;
+            color: #FFFFFF;
+            display: block;
         }
         .loc-details {
-            font-size: 0.6rem;
+            font-size: 0.5rem;
             text-transform: uppercase;
             letter-spacing: 1px;
-            color: #D4C5B2;
-            margin-top: 3px;
+            color: #8B8B8B;
+            margin-top: 4px;
+            display: block;
         }
-        .letter-actions {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            width: 100%;
-            margin-top: 15px;
+
+        .envelope-wrapper.open {
+            transform: translateY(60px);
+            transition: transform 1.2s cubic-bezier(0.25, 1, 0.3, 1);
+        }
+
+        .envelope-wrapper .envelope-top {
+            transform-origin: top center;
+            transition: transform 1.2s cubic-bezier(0.33, 1, 0.68, 1), z-index 0.3s;
+        }
+
+        .envelope-wrapper.open .envelope-top {
+            transform: rotateX(180deg);
+            z-index: 1;
+            background-color: #CBBBA8;
+        }
+
+        .envelope-wrapper .wax-seal {
+            transition: all 0.6s cubic-bezier(0.33, 1, 0.68, 1);
+        }
+        .envelope-wrapper.open .wax-seal {
+            transform: translate(-50%, -40%) scale(0);
             opacity: 0;
-            transform: translateY(10px);
-            transition: opacity 0.6s ease 2s, transform 0.6s ease 2s;
+            pointer-events: none;
+        }
+
+        .envelope-wrapper .letter-card {
+            transition: transform 1.5s cubic-bezier(0.34, 1.3, 0.64, 1) 0.8s,
+                        height 1.5s cubic-bezier(0.34, 1.3, 0.64, 1) 0.8s,
+                        z-index 0s 0.8s;
+        }
+
+        .envelope-wrapper.open .letter-card {
+            opacity: 1;
+            z-index: 10;
+            transform: translateY(-290px);
+            height: 450px;
+        }
+
+        .envelope-wrapper .letter-inner {
+            transition: opacity 0.8s ease 1.8s;
+        }
+        .envelope-wrapper.open .letter-inner {
+            opacity: 1;
         }
         .envelope-wrapper.open .letter-actions {
             opacity: 1;
             transform: translateY(0);
         }
+
+        .letter-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            width: 100%;
+            margin-top: 65px;
+            opacity: 0;
+            transform: translateY(15px);
+            transition: opacity 0.8s ease 2.1s, transform 0.8s cubic-bezier(0.25, 1, 0.3, 1) 2.1s;
+        }
+
         .btn-2gis {
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
-            background: transparent;
-            border: 1px solid #FAD7A0;
-            color: #FAD7A0 !important;
+            background-color: transparent;
+            border: 1px solid #C9A87C;
+            color: #C9A87C !important;
             text-decoration: none;
-            padding: 8px 12px;
+            padding: 10px 16px;
             font-size: 0.75rem;
             text-transform: uppercase;
             letter-spacing: 1px;
             font-weight: 500;
             border-radius: 4px;
             transition: all 0.3s ease;
-            cursor: pointer;
         }
-        .btn-2gis:hover {
-            background: rgba(250, 215, 160, 0.1);
+        .btn-2gis:active {
+            background-color: rgba(201, 168, 124, 0.1);
         }
+
         .btn-letter-next {
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 6px;
-            background: #F5F0EB;
+            background-color: #F5F0EB;
             border: none;
-            color: #8B3A3A;
-            padding: 8px 12px;
+            color: #3D4A4A;
+            padding: 10px 16px;
             font-size: 0.75rem;
             text-transform: uppercase;
             letter-spacing: 1px;
@@ -477,422 +863,782 @@
             cursor: pointer;
             transition: all 0.3s ease;
         }
-        .btn-letter-next:hover {
+        .btn-letter-next:active {
             opacity: 0.9;
+            transform: scale(0.98);
         }
-        .envelope-hint {
-            font-size: 0.9rem;
-            color: #8B3A3A;
+
+        /* ---------- СЦЕНА 5 (RSVP) ---------- */
+        .rsvp-container {
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            box-sizing: border-box;
+            background-color: #F5F0EB;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .rsvp-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .rsvp-subtitle {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: #C9A87C;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .rsvp-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2rem;
             font-weight: 400;
+            color: #3D4A4A;
+            margin-bottom: 12px;
+        }
+
+        .rsvp-text {
+            font-size: 0.8rem;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .rsvp-form {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .group-label {
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #3D4A4A;
+        }
+
+        .radio-tiles {
+            display: flex;
+            gap: 12px;
+        }
+        .tile-card {
+            flex: 1;
+            position: relative;
+            cursor: pointer;
+        }
+        .tile-card input[type="radio"] {
+            position: absolute;
+            opacity: 0;
+        }
+        .tile-content {
+            border: 1px solid #D4C5B2;
+            padding: 14px;
+            text-align: center;
+            border-radius: 6px;
+            background-color: #FFFFFF;
+            transition: all 0.3s ease;
+        }
+        .tile-card input[type="radio"]:checked + .tile-content {
+            background-color: #3D4A4A;
+            border-color: #3D4A4A;
+        }
+        .tile-card input[type="radio"]:checked + .tile-content .tile-title {
+            color: #FFFFFF;
+        }
+        .tile-title {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #333;
+            transition: color 0.3s ease;
+        }
+
+        .rsvp-input {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #D4C5B2;
+            background-color: #FFFFFF;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            box-sizing: border-box;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        .rsvp-input:focus {
+            border-color: #3D4A4A;
+        }
+
+        .checkbox-tiles {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .tile-card-check {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background-color: #FFFFFF;
+            padding: 12px 14px;
+            border-radius: 6px;
+            border: 1px solid #D4C5B2;
+            cursor: pointer;
+            position: relative;
+        }
+        .tile-card-check input[type="checkbox"] {
+            position: absolute;
+            opacity: 0;
+        }
+        .check-custom {
+            width: 18px;
+            height: 18px;
+            border: 1px solid #C9A87C;
+            border-radius: 4px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        .tile-card-check input[type="checkbox"]:checked + .check-custom {
+            background-color: #C9A87C;
+        }
+        .tile-card-check input[type="checkbox"]:checked + .check-custom::after {
+            content: '';
+            position: absolute;
+            left: 6px;
+            top: 2px;
+            width: 4px;
+            height: 8px;
+            border: solid white;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
+        .check-text {
+            font-size: 0.88rem;
+            color: #333;
+        }
+
+        .btn-rsvp-submit {
+            background-color: #3D4A4A;
+            color: #FFFFFF;
+            border: none;
+            padding: 16px;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background-color 0.3s;
+        }
+        .btn-rsvp-submit:active {
+            background-color: #2C3E3E;
+        }
+
+        .rsvp-success-message {
+            text-align: center;
+            padding: 30px 10px;
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        .success-icon {
+            font-size: 3rem;
             margin-bottom: 15px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ---------- СЦЕНА 6 (ФИНАЛ) ---------- */
+        #scene-6 {
+            opacity: 0;
+            transition: opacity 1.5s cubic-bezier(0.25, 1, 0.3, 1);
+        }
+        #scene-6.active {
+            opacity: 1;
+        }
+
+        .final-scene-container {
+            width: 100%;
+            min-height: 100vh;
+            background-color: #F5F0EB;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            box-sizing: border-box;
+        }
+
+        .final-photo-wrapper {
+            position: relative;
+            width: 100%;
+            height: 45vh;
+            overflow: hidden;
+        }
+
+        .final-photo {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center 25%;
+        }
+
+        .photo-overlay-gradient {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 40%;
+            background: linear-gradient(to top, #F5F0EB 0%, rgba(245, 240, 235, 0) 100%);
+        }
+
+        .final-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 30px 24px 40px 24px;
+            text-align: center;
+            box-sizing: border-box;
+        }
+
+        .final-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.2rem;
+            font-weight: 400;
+            color: #3D4A4A;
+            margin-bottom: 15px;
+        }
+
+        .final-blurb {
+            font-size: 0.88rem;
+            line-height: 1.6;
+            color: #555555;
+            max-width: 320px;
+            margin-bottom: 20px;
+        }
+
+        .final-divider {
+            width: 50px;
+            height: 1px;
+            background-color: #D4C5B2;
+            margin: 10px 0 25px 0;
+        }
+
+        .hashtag-box {
+            background-color: #FFFFFF;
+            border: 1px dashed #C9A87C;
+            padding: 14px 24px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+
+        .hashtag-label {
+            display: block;
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: #8B8B8B;
+            margin-bottom: 4px;
+        }
+
+        .hashtag-value {
+            font-family: 'Manrope', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #3D4A4A;
             letter-spacing: 0.5px;
         }
 
-        /* ==================== ТАЙМИНГ (ВО СКОЛЬКО?) ==================== */
-        .timing {
-            padding: 40px 0;
-            background: #F4EDE6;
-        }
-        .timing-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            max-width: 500px;
-            margin: 0 auto;
-        }
-        .timing-item {
-            background: #fff;
-            padding: 18px;
-            border-radius: 12px;
-            text-align: center;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.04);
-        }
-        .timing-icon {
-            font-size: 1.8rem;
-            display: block;
-            margin-bottom: 6px;
-        }
-        .timing-text {
-            font-weight: 500;
+        .final-signature {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.25rem;
+            font-style: italic;
+            color: #C9A87C;
+            margin-top: auto;
         }
 
-        /* ==================== RSVP ==================== */
-        .rsvp {
-            padding: 40px 0;
-            background: #FBF7F2;
-        }
-        .rsvp-text {
-            text-align: center;
-            max-width: 500px;
-            margin: 0 auto 30px;
-            color: #555;
-        }
-        .rsvp-form {
-            max-width: 450px;
-            margin: 0 auto;
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-        .rsvp-form label {
-            font-weight: 500;
-            font-size: 0.9rem;
-        }
-        .rsvp-form input[type="text"],
-        .rsvp-form input[type="number"] {
-            padding: 10px 14px;
-            border: 1px solid #D3C6BC;
-            border-radius: 8px;
-            font-size: 1rem;
-        }
-        .radio-group {
+        .wedding-timer {
             display: flex;
             align-items: center;
+            justify-content: center;
             gap: 10px;
+            margin: 20px 0;
+            width: 100%;
+            max-width: 320px;
+        }
+
+        .timer-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 60px;
+        }
+
+        .timer-number {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.2rem;
             font-weight: 400;
-            cursor: pointer;
+            color: #3D4A4A;
+            line-height: 1;
         }
-        .radio-group input[type="radio"] {
-            width: 18px;
-            height: 18px;
-        }
-        .btn-rsvp {
-            background: #8B3A3A;
-            color: #fff;
-            border: none;
-            padding: 14px;
-            border-radius: 40px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background 0.3s;
+
+        .timer-label {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #8B8B8B;
             margin-top: 6px;
         }
-        .btn-rsvp:hover {
-            background: #6f2d2d;
-        }
-        .rsvp-success {
-            text-align: center;
-            font-size: 1.2rem;
-            color: #8B3A3A;
-            padding: 20px;
-            background: #F4EDE6;
-            border-radius: 12px;
-        }
 
-        /* ==================== ФУТЕР ==================== */
-        .footer {
-            background: #2D2D2D;
-            color: #E8DDD3;
-            padding: 30px 0;
-            text-align: center;
-        }
-        .footer-names {
-            font-family: 'Great Vibes', cursive;
+        .timer-separator {
+            font-family: 'Cormorant Garamond', serif;
             font-size: 1.8rem;
-            color: #FAD7A0;
-        }
-        .footer-links a {
-            color: #E8DDD3;
-            text-decoration: none;
-            margin: 0 10px;
-            font-size: 0.9rem;
-        }
-        .footer-links a:hover {
-            color: #FAD7A0;
-        }
-        .footer-logo {
-            margin-top: 15px;
-            font-family: 'Great Vibes', cursive;
-            font-size: 1.2rem;
-            letter-spacing: 1px;
+            color: #C9A87C;
+            margin-bottom: 16px;
         }
 
-        /* ==================== АДАПТИВ ==================== */
-        @media (max-width: 600px) {
-            .script-title { font-size: 2.4rem; }
-            .hero .script-title { font-size: 3rem; }
-            .hero-sub { font-size: 1rem; }
-            .envelope-wrapper { width: 280px; height: 190px; }
-            .letter-card { width: 256px; height: 170px; padding: 16px 12px; }
-            .envelope-wrapper.open .letter-card { transform: translateY(-280px); height: 420px; }
-            .letter-names { font-size: 1.8rem; }
-            .timing-grid { grid-template-columns: 1fr 1fr; }
-            .date-text { font-size: 1.6rem; }
-            .date-time { font-size: 1.1rem; }
+        /* ---------- АДАПТИВ ---------- */
+        @media screen and (max-width: 768px) {
+            #scene-5 .rsvp-container {
+                max-height: 80vh !important;
+                overflow-y: auto !important;
+                -webkit-overflow-scrolling: touch !important;
+                padding-bottom: 40px !important;
+            }
+            #scene-6 .final-scene-container,
+            #scene-6 .final-content {
+                max-height: 82vh !important;
+                overflow-y: auto !important;
+                -webkit-overflow-scrolling: touch !important;
+                padding-bottom: 50px !important;
+            }
         }
     </style>
 </head>
 <body>
 
-    <!-- ХЕДЕР -->
-    <header class="header">
-        <div class="container">
-            <div class="logo">Synodica.studio</div>
-            <div class="logo-subtitle">сайты-пригласительные</div>
-        </div>
-    </header>
+    <audio id="bg-music" src="ambient.mp3" loop preload="auto"></audio>
 
-    <!-- БЛОК "МЫ ЖЕНИМСЯ!" (Нейтральное фото) -->
-    <section class="hero">
-        <div class="container">
-            <h1 class="script-title">Мы женимся!</h1>
-            <p class="hero-sub">Приглашаем вас разделить этот день с нами</p>
+    <!-- ==================== СЦЕНА 1 ==================== -->
+    <section class="scene active" id="scene-1">
+        <div class="scene-bg ken-burns" style="background-image: url('photo/hero.jpg');"></div>
+        
+        <div class="scene-bg ken-burns" style="background-image: url('images/hero.jpg');"></div>
+        <div class="luxury-overlay"></div>
+        
+        <div class="intro-container">
+            <span class="intro-badge">Свадебная история</span>
+            
+            <h1 class="title-main">
+                <span class="name-block">Maxim</span>
+                <span class="ampersand">&</span>
+                <span class="name-block">Diana</span>
+            </h1>
+            
+            <div class="intro-divider"></div>
+            <p class="date-sub">12.09.2026</p>
+            
+            <button class="btn-start" onclick="nextScene(2)">
+                <span class="btn-flash"></span>
+                <span class="btn-text">Открыть историю</span>
+                <span class="btn-arrow-icon">→</span>
+            </button>
+        </div>
+        <div class="brand-footer">
+            <span class="brand-name">Synodica Studio</span>
+            <span class="brand-sub">Сайты-пригласительные</span>
         </div>
     </section>
 
-    <!-- БЛОК "УЗНАЛИ?" (История) -->
-    <section class="story">
-        <div class="container">
-            <h2 class="script-title">Узнали?</h2>
-            <p class="story-text">Мы встретились в маленьком кафе на углу, где кофе пах корицей, а вывеска обещала «домашний уют». С тех пор прошло 5 лет, и мы решили, что хотим разделить эту уютную историю с вами.</p>
-            <div class="hand-drawn-arrow">→</div>
-        </div>
-    </section>
+    <!-- ==================== СЦЕНА 2 ==================== -->
+    <section class="scene" id="scene-2">
+        <div class="luxury-journal-container">
+            
+            <div class="ambient-glow"></div>
 
-    <!-- БЛОК "ДАТА" (вишнёвый) -->
-    <section class="date-block">
-        <div class="container">
-            <h2 class="script-title">Ждём вас</h2>
-            <p class="date-text">12 сентября 2026 года</p>
-            <p class="date-time">в 16:00 (4 часа вечера)</p>
-            <div class="calendar">
-                <div class="calendar-header">Сентябрь 2026</div>
-                <div class="calendar-grid">
-                    <span class="day">П</span><span class="day">В</span><span class="day">С</span>
-                    <span class="day">Ч</span><span class="day">П</span><span class="day">С</span><span class="day">В</span>
-                    <span class="day-num empty"></span>
-                    <span class="day-num">1</span><span class="day-num">2</span><span class="day-num">3</span>
-                    <span class="day-num">4</span><span class="day-num">5</span><span class="day-num">6</span>
-                    <span class="day-num">7</span><span class="day-num">8</span><span class="day-num">9</span>
-                    <span class="day-num">10</span><span class="day-num">11</span><span class="day-num selected">12</span>
-                    <span class="day-num">13</span><span class="day-num">14</span><span class="day-num">15</span>
-                    <span class="day-num">16</span><span class="day-num">17</span><span class="day-num">18</span>
-                    <span class="day-num">19</span><span class="day-num">20</span><span class="day-num">21</span>
-                    <span class="day-num">22</span><span class="day-num">23</span><span class="day-num">24</span>
-                    <span class="day-num">25</span><span class="day-num">26</span><span class="day-num">27</span>
-                    <span class="day-num">28</span><span class="day-num">29</span><span class="day-num">30</span>
+            <div class="journal-text-wrapper left-align">
+@@ -49,7 +1272,7 @@ <h1 class="title-main">
+
+            <div class="journal-img-block floating-card">
+                <div class="img-inner-mask">
+                    <img src="photo/story-intro.jpg" alt="Maxim & Diana" class="revealing-photo-premium">
+                    <img src="images/story-intro.jpg" alt="Maxim & Diana" class="revealing-photo-premium">
                 </div>
-                <div class="calendar-heart">❤️</div>
+                <div class="photo-tag">Это судьба...</div>
             </div>
+@@ -65,13 +1288,16 @@ <h1 class="title-main">
+                <span class="indicator-text">Продолжить</span>
+            </button>
+        </div>
+        <div class="brand-footer">
+            <span class="brand-name">Synodica Studio</span>
+            <span class="brand-sub">Сайты-пригласительные</span>
         </div>
     </section>
 
-    <!-- БЛОК "ЛОКАЦИЯ" -->
-    <section class="location">
-        <div class="container">
-            <h2 class="script-title">Локация</h2>
-            <div class="location-content">
-                <div class="polaroid">
-                    <img src="images/1.jpg" alt="усадьба" class="polaroid-img" style="max-width: 280px; border-radius: 4px;">
-                    <span class="polaroid-caption">Усадьба «Тихий берег»</span>
+    <!-- ==================== СЦЕНА 3 ==================== -->
+    <section class="scene" id="scene-3">
+        <div class="story-gallery-container" id="gyro-container">
+            
+            <div class="gallery-overlay" onclick="closeAllPhotos()"></div>
+            
+            <div class="gallery-header">
+                <span class="episode-counter">_________</span>
+                <h2 class="gallery-title">История одной судьбоносной встречи</h2>
+@@ -82,7 +1308,7 @@ <h2 class="gallery-title">История одной судьбоносной в
+            <div class="scattered-card card-1" onclick="zoomPhoto(this)">
+                <div class="card-pin"></div>
+                <div class="img-container">
+                    <img src="photo/story-1.jpg" alt="Кофейный побег">
+                    <img src="images/story-1.jpg" alt="Кофейный побег">
                 </div>
-                <p class="location-text">Мы будем ждать вас в живописном месте на берегу озера. Адрес: ул. Береговая, 15</p>
-                <button class="btn-map" onclick="window.open('https://go.2gis.com/your-link','_blank')">Открыть карту</button>
-            </div>
+                <div class="card-story-text">
+                    <span class="card-step">01. «Кофейный побег»</span>
+@@ -94,7 +1320,7 @@ <h2 class="gallery-title">История одной судьбоносной в
+            <div class="scattered-card card-2" onclick="zoomPhoto(this)">
+                <div class="card-pin"></div>
+                <div class="img-container">
+                    <img src="photo/story-2.jpg" alt="Тысячи километров">
+                    <img src="images/story-2.jpg" alt="Тысячи километров">
+                </div>
+                <div class="card-story-text">
+                    <span class="card-step">02. Проверка расстоянием</span>
+@@ -106,7 +1332,7 @@ <h2 class="gallery-title">История одной судьбоносной в
+            <div class="scattered-card card-3" onclick="zoomPhoto(this)">
+                <div class="card-pin"></div>
+                <div class="img-container">
+                    <img src="photo/story-3.jpg" alt="Секретный заговор">
+                    <img src="images/story-3.jpg" alt="Секретный заговор">
+                </div>
+                <div class="card-story-text">
+                    <span class="card-step">03. Операция «Горный пик»</span>
+@@ -118,7 +1344,7 @@ <h2 class="gallery-title">История одной судьбоносной в
+            <div class="scattered-card card-4" onclick="zoomPhoto(this)">
+                <div class="card-pin"></div>
+                <div class="img-container">
+                    <img src="photo/story-4.jpg" alt="Идеальный туман">
+                    <img src="images/story-4.jpg" alt="Идеальный туман">
+                </div>
+                <div class="card-story-text">
+                    <span class="card-step">04. Ложная тревога</span>
+@@ -130,7 +1356,7 @@ <h2 class="gallery-title">История одной судьбоносной в
+            <div class="scattered-card card-5" onclick="zoomPhoto(this)">
+                <div class="card-pin"></div>
+                <div class="img-container">
+                    <img src="photo/story-5.jpg" alt="Закат и заветное Да">
+                    <img src="images/story-5.jpg" alt="Закат и заветное Да">
+                </div>
+                <div class="card-story-text">
+                    <span class="card-step">05. Главное «Да»</span>
+@@ -143,30 +1369,29 @@ <h2 class="gallery-title">История одной судьбоносной в
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </button>
+        </div>
+        <div class="brand-footer">
+            <span class="brand-name">Synodica Studio</span>
+            <span class="brand-sub">Сайты-пригласительные</span>
         </div>
     </section>
 
-    <!-- БЛОК КОНВЕРТА (НОВЫЙ) -->
-    <section class="envelope-section">
-        <div class="container">
-            <h2 class="script-title">Приглашение</h2>
-            <div class="envelope-hint">Нажмите, чтобы открыть конверт</div>
-            <div class="envelope-wrapper" id="envelope">
+    <!-- ==================== СЦЕНА 4 ==================== -->
+    <section class="scene" id="scene-4">
+        <div class="envelope-scene-container">
+            
+            <div class="envelope-hint">Тапни на печать, чтобы открыть конверт</div>
+
+            <div class="envelope-wrapper" id="envelope" onclick="openEnvelope()">
+                
                 <div class="envelope-back"></div>
-                <div class="letter-card" id="letterCard">
+                
+                <div class="letter-card" id="letterCard" onclick="stopPropagation(event)">
                     <div class="letter-inner">
                         <span class="letter-subtitle">Приглашение</span>
-                        <h1 class="letter-names">Имя & Имя</h1>
+                        <h1 class="letter-names">Maxim & Diana</h1>
+                        
                         <div class="letter-divider"></div>
+                        
                         <p class="letter-invitation">
-                            Дорогие близкие и друзья!<br>
-                            Приглашаем вас разделить с нами<br>
+                            Дорогие близкие и друзья! <br>
+                            Приглашаем вас разделить с нами <br>
                             начало нашей семейной истории.
                         </p>
+                        
                         <div class="letter-date-box">
                             <div class="date-item">
                                 <span class="date-num">12</span>
-                                <span class="date-month">Сентября</span>
-                            </div>
-                            <div class="date-item">
-                                <span class="date-num">2026</span>
+@@ -177,20 +1402,16 @@ <h1 class="letter-names">Maxim & Diana</h1>
                                 <span class="date-month">Суббота</span>
                             </div>
                         </div>
+
                         <div class="letter-location">
-                            <span class="loc-title">Усадьба «Тихий берег»</span>
-                            <span class="loc-details">Сбор гостей в 16:00</span>
+                            <span class="loc-title">Grand Palace Hall</span>
+                            <span class="loc-details">Сбор гостей в 16:00 // Начало торжества в 17:00</span>
                         </div>
-                        <div class="letter-actions">
-                            <a href="https://go.2gis.com/your-link" target="_blank" class="btn-2gis">
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a8 8 0 0 0-8 8c0 5.25 8 12 8 12s8-6.75 8-12a8 8 0 0 0-8-8z"/><circle cx="12" cy="10" r="3"/></svg>
-                                <span>Открыть в 2ГИС</span>
-                            </a>
-                            <button class="btn-letter-next" onclick="document.getElementById('rsvp-form').scrollIntoView({behavior:'smooth'});">
-                                <span>Подтвердить присутствие</span>
-                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-                            </button>
-                        </div>
+                        
                     </div>
-                </div>
+
+                    <div class="letter-actions">
+                        <a href="https://go.2gis.com" target="_blank" class="btn-2gis" onclick="stopPropagation(event)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a8 8 0 0 0-8 8c0 5.25 8 12 8 12s8-6.75 8-12a8 8 0 0 0-8-8z"/><circle cx="12" cy="10" r="3"/></svg>
+                            <span>Открыть в 2ГИС</span>
+                        </a>
+
+                        <button class="btn-letter-next" onclick="handleEnvelopeNextClick(event)">
+                            <span>Подтвердить присутствие</span>
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+@@ -201,17 +1422,19 @@ <h1 class="letter-names">Maxim & Diana</h1>
                 <div class="envelope-left"></div>
                 <div class="envelope-right"></div>
                 <div class="envelope-bottom"></div>
+                
                 <div class="envelope-top" id="envelopeTop"></div>
-                <div class="wax-seal" id="waxSeal">❤</div>
+
+                <div class="wax-seal" id="waxSeal">
+                    <span class="seal-monogram">M&D</span>
+                </div>
             </div>
+
+        </div>
+        <div class="brand-footer">
+            <span class="brand-name">Synodica Studio</span>
+            <span class="brand-sub">Сайты-пригласительные</span>
         </div>
     </section>
 
-    <!-- БЛОК "ВО СКОЛЬКО?" -->
-    <section class="timing">
-        <div class="container">
-            <h2 class="script-title">Во сколько?</h2>
-            <div class="timing-grid">
-                <div class="timing-item">
-                    <span class="timing-icon">🕰️</span>
-                    <span class="timing-text">16:00 — сбор гостей</span>
-                </div>
-                <div class="timing-item">
-                    <span class="timing-icon">💍</span>
-                    <span class="timing-text">17:00 — церемония</span>
-                </div>
-                <div class="timing-item">
-                    <span class="timing-icon">🍽️</span>
-                    <span class="timing-text">18:00 — банкет</span>
-                </div>
-                <div class="timing-item">
-                    <span class="timing-icon">🎉</span>
-                    <span class="timing-text">до последнего гостя</span>
-                </div>
+    <!-- ==================== СЦЕНА 5 ==================== -->
+    <section class="scene" id="scene-5">
+        <div class="rsvp-container">
+            <div class="rsvp-header">
+@@ -220,21 +1443,16 @@ <h1 class="letter-names">Maxim & Diana</h1>
             </div>
+
+            <form id="rsvp-form" class="rsvp-form" onsubmit="sendRsvp(event)">
+                
+                <div class="form-group">
+                    <label class="group-label">Сможете ли вы разделить с нами этот праздник?</label>
+                    <div class="radio-tiles">
+                        <label class="tile-card">
+                            <input type="radio" name="attendance" value="Приду" required>
+                            <div class="tile-content">
+                                <span class="tile-title">Я приду</span>
+                            </div>
+                            <div class="tile-content"><span class="tile-title">Я приду</span></div>
+                        </label>
+                        <label class="tile-card">
+                            <input type="radio" name="attendance" value="Не смогу">
+                            <div class="tile-content">
+                                <span class="tile-title">Не смогу</span>
+                            </div>
+                            <div class="tile-content"><span class="tile-title">Не смогу</span></div>
+                        </label>
+                    </div>
+                </div>
+@@ -279,25 +1497,27 @@ <h1 class="letter-names">Maxim & Diana</h1>
+                <div class="success-icon">✨</div>
+                <h3>Спасибо за ваш ответ!</h3>
+                <p id="success-desc">Ваши данные успешно переданы молодоженам.</p>
+                
+                <button type="button" class="btn-rsvp-submit" style="margin-top: 25px; width: auto; padding: 12px 30px;" onclick="nextScene(6)">
+                    <span>Посмотреть таймер</span>
+                </button>
+            </div>
+        </div>
+        <div class="brand-footer">
+            <span class="brand-name">Synodica Studio</span>
+            <span class="brand-sub">Сайты-пригласительные</span>
         </div>
     </section>
 
-    <!-- БЛОК "RSVP" -->
-    <section class="rsvp" id="rsvp">
-        <div class="container">
-            <h2 class="script-title">Подтвердите присутствие</h2>
-            <p class="rsvp-text">Пожалуйста, сообщите нам, сможете ли вы разделить этот день с нами, до 28 августа 2026 года.</p>
-            <form id="rsvp-form" class="rsvp-form">
-                <label for="name">Ваше имя</label>
-                <input type="text" id="name" name="name" placeholder="Иван Иванов" required>
-                <label for="guests">Количество гостей</label>
-                <input type="number" id="guests" name="guests" min="1" max="5" value="1">
-                <label class="radio-group">
-                    <input type="radio" name="attendance" value="yes" checked>
-                    <span>С удовольствием приду</span>
-                </label>
-                <label class="radio-group">
-                    <input type="radio" name="attendance" value="no">
-                    <span>К сожалению, не смогу</span>
-                </label>
-                <button type="submit" class="btn-rsvp">Отправить</button>
-            </form>
-            <div id="rsvp-success" class="rsvp-success" style="display:none;">
-                <p>Спасибо! Ваш ответ принят. 🎉</p>
+    <!-- ==================== СЦЕНА 6 ==================== -->
+    <section class="scene" id="scene-6">
+        <div class="final-scene-container">
+            
+            <div class="final-photo-wrapper">
+                <img src="photo/final-photo.jpg" alt="Максим и Диана" class="final-photo">
+                <img src="images/final-photo.jpg" alt="Максим и Диана" class="final-photo">
+                <div class="photo-overlay-gradient"></div>
             </div>
+
+            <div class="final-content">
+                <h2 class="final-title">До встречи на свадьбе!</h2>
+                
+                <p class="final-blurb">
+                    Каждый из вас — важная часть нашей жизни. Мы с нетерпением ждём этот день!
+                </p>
+@@ -333,10 +1553,162 @@ <h2 class="final-title">До встречи на свадьбе!</h2>
+
+                <p class="final-signature">С любовью, Максим и Диана ✨</p>
+            </div>
+
+        </div>
+        <div class="brand-footer">
+            <span class="brand-name">Synodica Studio</span>
+            <span class="brand-sub">Сайты-пригласительные</span>
         </div>
     </section>
 
-    <!-- ФУТЕР -->
-    <footer class="footer">
-        <div class="container">
-            <p>С любовью,</p>
-            <p class="footer-names">Имя Жениха & Имя Невесты</p>
-            <p class="footer-links">
-                <a href="tel:+70000000000">+7 000 000-00-00</a>
-                <a href="mailto:hello@example.com">hello@example.com</a>
-            </p>
-            <p class="footer-logo">Synodica.studio</p>
-        </div>
-    </footer>
-
+    <script src="script.js"></script>
     <script>
-        // ==================== ИНТЕРАКТИВ С КОНВЕРТОМ ====================
-        const envelope = document.getElementById('envelope');
-        const waxSeal = document.getElementById('waxSeal');
-        const envelopeTop = document.getElementById('envelopeTop');
+        // ===================== ВСЕ СКРИПТЫ =====================
 
-        // Открытие конверта по клику на печать или сам конверт
-        function toggleEnvelope() {
-            if (envelope.classList.contains('open')) {
-                // Если уже открыт, не закрываем (можно сделать закрытие при повторном клике, но оставим только открытие)
-                return;
+        function nextScene(sceneNumber) {
+            const music = document.getElementById('bg-music');
+            if (music && music.paused) {
+                music.play().catch(e => console.log("Музыка активирована"));
             }
-            envelope.classList.add('open');
+
+            const currentScene = document.querySelector('.scene.active');
+            if (currentScene) {
+                currentScene.classList.remove('active');
+            }
+
+            const nextSceneElement = document.getElementById(`scene-${sceneNumber}`);
+            if (nextSceneElement) {
+                nextSceneElement.classList.add('active');
+            }
+
+            if (sceneNumber === 5 && localStorage.getItem("rsvp_submitted") === "true") {
+                checkRsvpStatusOnScene5();
+            }
         }
 
-        // Клик по печати или конверту открывает конверт
-        waxSeal.addEventListener('click', function(e) {
-            e.stopPropagation();
-            toggleEnvelope();
-        });
-
-        envelope.addEventListener('click', function(e) {
-            // Если клик не по печати и не по внутренним элементам (чтобы не мешать)
-            if (!e.target.closest('.letter-card') && !e.target.closest('.wax-seal')) {
-                toggleEnvelope();
+        function checkRsvpStatusOnScene5() {
+            const form = document.getElementById('rsvp-form');
+            const successMessage = document.getElementById('rsvp-success');
+            if (form && successMessage) {
+                form.style.display = 'none';
+                successMessage.style.display = 'block';
+                const successTitle = successMessage.querySelector('h3');
+                const successDesc = document.getElementById('success-desc');
+                if (successTitle) successTitle.textContent = 'Вы уже оставили свой ответ!';
+                if (successDesc) successDesc.textContent = 'Рады, что вы будете с нами в этот важный день.';
             }
-        });
+        }
 
-        // Предотвращаем закрытие конверта при клике внутри письма
-        document.getElementById('letterCard').addEventListener('click', function(e) {
-            e.stopPropagation();
-        });
+        function handleEnvelopeNextClick(event) {
+            if (event) event.stopPropagation();
+            nextScene(5);
+        }
 
-        // ==================== ОТПРАВКА RSVP ====================
-        document.getElementById('rsvp-form').addEventListener('submit', function(e) {
-            e.preventDefault();
+        function zoomPhoto(card) {
+            if (card.classList.contains('zoomed')) {
+                card.classList.remove('zoomed');
+            } else {
+                document.querySelectorAll('.scattered-card.zoomed').forEach(c => c.classList.remove('zoomed'));
+                card.classList.add('zoomed');
+            }
+        }
 
-            const form = this;
-            const successDiv = document.getElementById('rsvp-success');
+        function closeAllPhotos() {
+            document.querySelectorAll('.scattered-card.zoomed').forEach(c => c.classList.remove('zoomed'));
+        }
 
-            const name = document.getElementById('name').value.trim();
-            const guests = document.getElementById('guests').value;
-            const attendance = document.querySelector('input[name="attendance"]:checked')?.value || '';
+        function openEnvelope() {
+            const envelope = document.getElementById('envelope');
+            if (envelope) {
+                envelope.classList.toggle('open');
+            }
+        }
 
-            if (!name) {
-                alert('Пожалуйста, введите ваше имя.');
+        function stopPropagation(event) {
+            if (event) event.stopPropagation();
+        }
+
+        function sendRsvp(event) {
+            event.preventDefault();
+
+            const form = document.getElementById('rsvp-form');
+            const successMessage = document.getElementById('rsvp-success');
+            const submitButton = form.querySelector('.btn-rsvp-submit');
+
+            if (localStorage.getItem("rsvp_submitted") === "true") {
+                alert("Вы уже отправляли ответ с этого устройства.");
                 return;
             }
 
-            const formData = new FormData();
-            formData.append('name', name);
-            formData.append('guests', guests);
-            formData.append('attendance', attendance);
-            formData.append('access_key', 'c2bf3689-190a-48e3-8a6e-c9f13ad88314');
-            formData.append('subject', 'Новый RSVP с сайта-приглашения!');
+            if (submitButton) submitButton.disabled = true;
 
-            const btn = form.querySelector('.btn-rsvp');
-            btn.disabled = true;
-            btn.textContent = 'Отправка...';
+            const formData = new FormData(form);
+            formData.append("access_key", "e7d0e149-5d47-4ca0-b82c-73d5806cbdd1");
+            formData.append("subject", "Новый ответ RSVP на свадьбу!");
 
-            fetch('https://api.web3forms.com/submit', {
-                method: 'POST',
+            const drinks = [];
+            form.querySelectorAll('input[name="drinks"]:checked').forEach((checkbox) => {
+                drinks.push(checkbox.value);
+            });
+            formData.append("Выбранные напитки", drinks.length > 0 ? drinks.join(', ') : 'Не выбрано');
+
+            fetch("https://api.web3forms.com/submit", {
+                method: "POST",
                 body: formData
             })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
+            .then(async (response) => {
+                if (response.status === 200) {
+                    localStorage.setItem("rsvp_submitted", "true");
                     form.style.display = 'none';
-                    successDiv.style.display = 'block';
+                    successMessage.style.display = 'block';
                 } else {
-                    alert('Ошибка: ' + (data.message || 'Не удалось отправить. Попробуйте позже.'));
-                    btn.disabled = false;
-                    btn.textContent = 'Отправить';
+                    let json = await response.json();
+                    alert("Ошибка: " + json.message);
+                    if (submitButton) submitButton.disabled = false;
                 }
             })
-            .catch(error => {
-                alert('Ошибка сети. Проверьте подключение к интернету.');
-                btn.disabled = false;
-                btn.textContent = 'Отправить';
-                console.error(error);
+            .catch(() => {
+                alert("Что-то пошло не так. Проверьте подключение к интернету.");
+                if (submitButton) submitButton.disabled = false;
             });
-        });
+        }
 
-        // Прокрутка к форме при клике на кнопку внутри конверта (уже есть в onclick)
+        function initWeddingTimer() {
+            const weddingDate = new Date("September 12, 2026 17:00:00").getTime();
+
+            function updateTimer() {
+                const now = new Date().getTime();
+                const distance = weddingDate - now;
+
+                if (distance < 0) {
+                    clearInterval(timerInterval);
+                    const timerContainer = document.querySelector('.wedding-timer');
+                    if (timerContainer) {
+                        timerContainer.innerHTML = "<div class='timer-number' style='font-size: 1.5rem;'>Этот счастливый день настал! 🥂</div>";
+                    }
+                    return;
+                }
+
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                document.getElementById("timer-days").textContent = days < 10 ? "0" + days : days;
+                document.getElementById("timer-hours").textContent = hours < 10 ? "0" + hours : hours;
+                document.getElementById("timer-minutes").textContent = minutes < 10 ? "0" + minutes : minutes;
+                document.getElementById("timer-seconds").textContent = seconds < 10 ? "0" + seconds : seconds;
+            }
+
+            updateTimer();
+            const timerInterval = setInterval(updateTimer, 1000);
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            initWeddingTimer();
+            if (localStorage.getItem("rsvp_submitted") === "true") {
+                checkRsvpStatusOnScene5();
+            }
+        });
     </script>
 
 </body>
